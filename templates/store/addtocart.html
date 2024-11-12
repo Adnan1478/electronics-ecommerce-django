@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block title %}
+  E-commerse
+{% endblock %}
+
+{% block content %}
+  <section class="container">
+    <h1>Shopping Cart</h1>
+    <br />
+    <div id="productCartContainer">
+      {% for item in cart_items %}
+        <article class="information cards" style="align-items: center;gap: 3rem;justify-content: space-between;">
+          <div>
+            <span class="category">{{ item.product.category.cat_name }}</span>
+            <span class="category" hidden>{{ item.cart_id }}</span>
+          </div>
+          <div class="imageContainer">
+            <img class="productImage" src="/media/{{ item.product.image }}" alt="{{ item.product.name }}" />
+          </div>
+          <h2 class="productName">{{ item.product.product_name }}</h2>
+          <p class="productPrice">₹{{ item.product.price }}</p>
+          <p class="productQuantity">Quantity: {{ item.quantity }}</p>
+          <p class="totalPrice">Total Price: ₹{{ item.total_price }}</p>
+          <div style="display: flex;justify-content: space-between;gap: 1rem;">
+            <a href="#" onclick="confirmAddressChange('{{ item.cart_id }}')" class="add-to-cart-button remove-to-cart-button">Buy</a>
+            <a href="{% url 'remove_from_cart' item.cart_id %}" class="add-to-cart-button remove-to-cart-button">Remove</a>
+          </div>
+        </article>
+      {% empty %}
+        <p>Your cart is empty.</p>
+      {% endfor %}
+    </div>
+    {% comment %} <section class="productCartTotalElem">
+      <div class="productCartTotalElement">
+        <p>Selected Offer Summary</p>
+        <div class="productOrderTotal">
+          <div>
+            <p>Sub Total:</p>
+            <p class="productSubTotal">₹{{ subtotal }}</p>
+          </div>
+          <div>
+            <p>Tax:</p>
+            <p class="productTax">₹50</p>
+          </div>
+          <hr />
+          <div>
+            <p>Final Total:</p>
+            <p class="productFinalTotal">₹{{ final_total }}</p>
+          </div>
+        </div>
+      </div>
+    </section> {% endcomment %}
+  </section>
+  <script type="module" src="main.js"></script>
+  <script>
+    function confirmAddressChange(cartId) {
+      const confirmation = confirm("You want to change your address?");
+      if (confirmation) {
+        window.location.href = "{% url 'profile' %}";
+      } else {
+        window.location.href = `/buy/${cartId}`;  // Redirect to the buy URL if "No"
+      }
+    }
+  </script>
+{% endblock %}

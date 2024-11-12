@@ -1,0 +1,58 @@
+{% extends 'admin/layout_admin.html' %}
+{% load static %}
+{% block head_dash %}
+  Feedback
+{% endblock %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Feedback List</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Fullname</th>
+                      <th>Email</th>
+                      <th>Subject</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for fb in feedback %}
+                      <tr>
+                        <td>{{ fb.full_name }}</td>
+                        <td>{{ fb.email }}</td>
+                        <td>{{ fb.subject }}</td>
+                        <td>{{ fb.message }}</td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="11">No orders found.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Bill</title>
+    <style>
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        .invoice-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-header p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .invoice-details {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .invoice-details th, .invoice-details td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 15px;
+            text-align: left;
+        }
+        .invoice-details th {
+            background-color: #f5f5f5;
+        }
+        .invoice-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 10px;
+            text-align: right;
+        }
+        .terms {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <h1>Order Bill</h1>
+        <div class="invoice-header">
+            <p><strong>Invoice Number:</strong> {{ order.order_id }}</p>
+            <p><strong>Date of Issue:</strong> {{ order.created_at }}</p>
+        </div>
+        <table class="invoice-details">
+            <tr>
+                <th>Product</th>
+                <td>{{ order.product.product_name }}</td>
+            </tr>
+            <tr>
+                <th>Brand</th>
+                <td>{{ order.product.brand }}</td>
+            </tr>
+            <tr>
+                <th>Color</th>
+                <td>{{ order.product.color }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ order.quantity }}</td>
+            </tr>
+            <tr>
+                <th>Unit Price</th>
+                <td>Rs. {{ order.product.price|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <th>Total Price</th>
+                <td class="invoice-total">Rs. {{ total_price }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{% if order.status == "PROCESSING" %}Ordered{% else %}Canceled{% endif %}</td>
+            </tr>
+        </table>
+        <div class="terms">
+            <p><strong>Terms:</strong> Please pay by {{ order.created_at }}.</p>
+        </div>
+    </div>
+</body>
+</html>

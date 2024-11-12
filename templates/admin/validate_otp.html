@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <title>Forgot Password</title>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/loginform.css' %}" />
+</head>
+<body>
+
+  <form method="POST" class="form-group">
+    {% csrf_token %}
+    <h3>Validate OTP</h3>
+
+    <label>OTP</label>
+    <input type="text" name="otp" required class="input" placeholder="Enter OTP">
+    {% if form.otp.errors %}
+      <div class="error">{{ form.otp.errors }}</div>
+    {% endif %}
+
+    <label>New Password</label>
+    <div class="password-container">
+      <input type="password" name="new_password" id="id_new_password" required class="input" placeholder="Enter New Password">
+      <i class="far fa-eye password-toggle" onclick="togglePassword('id_new_password')"></i>
+    </div>
+    {% if form.new_password.errors %}
+      <div class="error">{{ form.new_password.errors }}</div>
+    {% endif %}
+
+    <label>Confirm Password</label>
+    <div class="password-container">
+      <input type="password" name="confirm_password" id="id_confirm_password" required class="input" placeholder="Confirm New Password">
+      <i class="far fa-eye password-toggle" onclick="togglePassword('id_confirm_password')"></i>
+    </div>
+    {% if form.confirm_password.errors %}
+      <div class="error">{{ form.confirm_password.errors }}</div>
+    {% endif %}
+
+    <button type="submit">Reset Password</button>
+  </form>
+
+  <script>
+    function togglePassword(fieldId) {
+      const passwordField = document.getElementById(fieldId);
+      const passwordToggle = passwordField.nextElementSibling;
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        passwordToggle.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        passwordField.type = "password";
+        passwordToggle.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .search-section{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }  
+    .search-input{
+      width: 80%;
+      height: 50px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .search-button {
+      width: 10%;
+      height: 50px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .search-button:hover {
+      background-color: #218838;
+    }
+    .category-select {
+      width: 10%;
+      height: 50px;
+      font-size: 16px;
+      text-align: center; /* Center text inside the select */
+      text-align-last: center; /* Center text in modern browsers */
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  
+    .category-select option {
+      text-align: left; /* Align text to the left in the options */
+    }
+    .space{
+      margin-right: 8px;
+    }
+  </style>
+{% endblock %}
+{% block title %}
+  E-commerse
+{% endblock %}
+
+{% block content %}
+  <!-- ========== Start Search Section ========== -->
+  <form method="GET" action="{% url 'product_list' %}">
+    <div class="search-section">
+      {% comment %} <i class='fas fa-filter'></i> {% endcomment %}
+      <select name="category" id="category-select" class="category-select">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+          <option value="{{ category.cat_id }}">{{ category.cat_name }}</option>
+        {% endfor %}
+      </select>
+      <input type="text" id="search-input" name="q" placeholder="Search for products, categories, or description" class="search-input" />
+      <button type="submit" class="search-button">
+        <i class='fas fa-search space'></i>Search
+      </button>
+    </div>
+  </form>
+
+  <!-- ========== Start Our Products Section ========== -->
+  <section class="section-products container">
+    <div class="">
+      <h2 class="section-common--heading">Checkout Our Products..</h2>
+    </div>
+    <section class="container">
+      <div id="productContainer">
+        {% for product in products %}
+          <article class="information cards">
+            <input type="hidden" class="productId" value="{{ product.product_id }}" />
+            <span class="category">{{ product.category.cat_name }}</span>
+            <div class="imageContainer">
+              <img class="productImage" src="/media/{{ product.image }}" alt="{{ product.product_name }}" />
+            </div>
+            <h2 class="productName">{{ product.product_name }}</h2>
+
+            <div class="productRating">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+
+            <p class="productDescription">{{ product.product_desc }}</p>
+
+            <div class="productPriceElement">
+              <p class="productPrice">₹{{ product.price }}</p>
+              <p class="productActualPrice"></p> <!-- Include if there's a discount or original price -->
+            </div>
+
+            <div class="productStockElement">
+              <p class="productProperty">Color:</p>
+              <p class="productStock">{{ product.color }}</p>
+            </div>
+
+            <div class="productQuantityElement">
+              <p class="productProperty">Quantity</p>
+              <div class="stockElement">
+                <button class="cartIncrement">+</button>
+                <p class="productQuantity">1</p>
+                <button class="cartDecrement">-</button>
+              </div>
+            </div>
+            <a href="{% url 'add_to_cart' product.product_id %}"><button class="add-to-cart-button"><i class="fa-solid fa-cart-shopping"></i> Add To Cart</button></a>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Notification Container -->
+    {% comment %} <div id="notification" class="notification hidden">
+      <p id="notificationMessage">Added to cart successfully!</p>
+    </div> {% endcomment %}
+  </section>
+
+  <script type="module" src="main.js"></script>
+  <script>
+    document.getElementById('category-select').addEventListener('change', function() {
+      document.getElementById('search-input').focus();
+    });
+  </script>
+{% endblock %}
+

@@ -1,0 +1,126 @@
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #f0f0f0;
+}
+
+form {
+  /*height: 500px;*/
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.95);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+  padding: 30px 35px;
+}
+form * {
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+form h3 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+::placeholder {
+  color: #666;
+}
+button {
+  margin-top: 30px;
+  width: 100%;
+  background-color: #333;
+  color: #ffffff;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.for_pass {
+  text-decoration: none;
+}
+
+/* password show  */
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 30px; /* Add padding to ensure space for the eye icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333;
+}
+
+.des {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center the links vertically */
+}
+
+.des a {
+  text-decoration: none;
+  color: #000; /* Adjust color as needed */
+  padding: 10px; /* Adjust padding as needed */
+}
+
+.homebut {
+  margin-left: 12%;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 60px;
+  background-color: #74c0fc;
+  border-radius: 10%;
+}
+
+.st {
+  font-size: 38px;
+  color: #ffffffd8;
+}

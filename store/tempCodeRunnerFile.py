@@ -1,0 +1,10 @@
+class UserUpload(models.Model):
+    uid = models.ForeignKey(Login, on_delete=models.CASCADE)
+    name = models.CharField(max_length=150, null=True)
+    contact = models.CharField(max_length=15, null=True)
+    address = models.CharField(max_length=255, null=True)
+    city = models.CharField(max_length=100, null=True)
+    state = models.CharField(max_length=100, null=True)
+    country = models.CharField(max_length=100, null=True)
+    zip_code = models.CharField(max_length=10, null=True)
+    image = models.ImageField(upload_to='user_uploads/', blank=True, null=True)

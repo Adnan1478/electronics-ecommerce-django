@@ -1,0 +1,71 @@
+{% extends 'admin/layout_admin.html' %}
+{% load static %}
+{% block head_dash %}
+  Admin Register
+{% endblock %}
+{% block content %}
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Add Admin</h3>
+              </div>
+              <div class="card-body">
+                <form method="POST" class="jumbotron" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Email" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password1" class="form-control" placeholder="Password" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Confirm Password:</label>
+                    <input type="password" name="comfirmpassword" id="password2" class="form-control" placeholder="Confirm Password" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="contact">Contact:</label>
+                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Contact No." required />
+                  </div>
+                  <div class="form-group">
+                    <label>Admin Rights:</label><br />
+                    <input type="radio" id="admin_rights_yes" name="admin_right" value="1" />
+                    <label for="admin_rights_yes">Yes</label><br />
+                    <input type="radio" id="admin_rights_no" name="admin_right" value="0" checked />
+                    <label for="admin_rights_no">No</label>
+                  </div>
+                  <div class="form-group">
+                    <a href="{% url 'ad_register' %}"><button class="btn btn-success" type="submit">Register</button></a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(fieldId) {
+      const passwordField = document.getElementById(fieldId)
+      const passwordToggle = passwordField.nextElementSibling
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text'
+        passwordToggle.classList.replace('fa-eye', 'fa-eye-slash')
+      } else {
+        passwordField.type = 'password'
+        passwordToggle.classList.replace('fa-eye-slash', 'fa-eye')
+      }
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'admin/layout_admin.html' %}
+{% load static %}
+{% block head_dash %}
+  Orders List
+{% endblock %}
+{% block content %}
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Orders</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      {% comment %} <th>User</th> {% endcomment %}
+                      <th>Product Name</th>
+                      <th>Product Image</th>
+                      <th>Quality</th>
+                      <th>Name</th>
+                      <th>City</th>
+                      <th>State</th>
+                      <th>Zip Code</th>
+                      <th>Contact</th>
+                      <th>Address</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
+                      <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.product.product_name }}</td>
+                        <td>
+                          <img src="{{ order.product.image.url }}" alt="{{ order.product.product_name }}" style="width: 100px; height: 100px; align-items: center;" />
+                        </td>
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.user_details.name }}</td>
+                        <td>{{ order.user_details.city }}</td>
+                        <td>{{ order.user_details.state }}</td>
+                        <td>{{ order.user_details.zip_code }}</td>
+                        <td>{{ order.user_details.contact }}</td>
+                        <td>{{ order.user_details.address }}</td>
+                        <td>
+                          {% if order.status == 'PROCESSING' %}
+                            <span class="badge badge-success">Processing</span>
+                          {% elif order.status == 'CANCELED' %}
+                            <span class="badge badge-danger">Cancel</span>
+                          {% else %}
+                            <span class="badge badge-warning">{{ order.status }}</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <div style="display: flex; justify-content: center; align-items: center;">
+                            <a href="{% url 'approve_order' order.order_id %}" class="btn btn-primary" style="margin-right: 10px;">Approve</a>
+                            <a href="{% url 'cancel_order' order.order_id %}" class="btn btn-danger">Cancel</a>
+                          </div>
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="11">No orders found.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

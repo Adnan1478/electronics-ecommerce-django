@@ -1,0 +1,80 @@
+{% extends 'admin/layout_admin.html' %}
+{% load static %}
+{% block head_dash %}
+  Products List
+{% endblock %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Products</h3>
+                <a href="{% url 'export_excel' %}" style="float: right;">
+                  <button class="btn btn-success">Export to Excel</button>
+                </a>
+              </div>
+              <!-- /.card-header -->
+              
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Category ID</th>
+                      <th>Category Name</th>
+                      <th>Category Description</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for category in category %}
+                      <tr>
+                        <td>{{ category.cat_id }}</td>
+                        <td>{{ category.cat_name }}</td>
+                        <td>{{ category.cat_description }}</td>
+                        <td>
+                          <div style="display: flex; justify-content: center; align-items: center;">
+                            {% if admin_right %}
+                              <a href="{% url 'category_update' category.cat_id %}"><button class="btn btn-primary" style="margin-right: 10px;">Edit</button></a>
+                              <a href="{% url 'category_delete' category.cat_id %}" onclick="return confirm('Are you sure you want to delete this category?');"><button class="btn btn-danger">Delete</button></a>
+                            {% else %}
+                              <button class="btn btn-secondary" disabled>No Access</button>
+                            {% endif %}
+                          </div>
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="4">No products found.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <script type="text/javascript">
+    {% if messages %}
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    {% endif %}
+  </script>
+  
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block title %}
+  E-commerce Contact
+{% endblock %}
+
+{% block content %}
+  <!-- ========== Start About Section ========== -->
+  <section class="section-contact">
+    <div class="container">
+      <h2 class="section-common--heading">Contact Us</h2>
+      <p class="section-common--subheading">Get in touch with us. We are always here to help you.</p>
+    </div>
+
+    <div class="container grid grid-two--cols">
+      <div class="contact-content">
+        <form method="POST" action="{% url 'contact' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="grid grid-two-cols mb-3">
+            <div>
+              <label for="id_full_name">Full Name</label>
+              {{ form.full_name }}
+              {% if form.full_name.errors %}
+                <div class="error">{{ form.full_name.errors }}</div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="id_email">Email Address</label>
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="error">{{ form.email.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_subject">Subject</label>
+            {{ form.subject }}
+            {% if form.subject.errors %}
+              <div class="error">{{ form.subject.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_message">Message</label>
+            {{ form.message }}
+            {% if form.message.errors %}
+              <div class="error">{{ form.message.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" class="btn contact-btn">Send Message</button>
+          </div>
+        </form>
+      </div>
+      <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.2613173278896!2d73.91411937501422!3d18.562253982539413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c147b8b3a3bf%3A0x6f7fdcc8e4d6c77e!2sPhoenix%20Marketcity%20Pune!5e0!3m2!1sen!2sin!4v1696124215167!5m2!1sen!2sin" width="100%" height="auto" style="border: 0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- * ========== Start Footer Section ========== -->
+
+  <script type="module" src="{% static 'main.js' %}"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init()
+  </script>
+{% endblock %}

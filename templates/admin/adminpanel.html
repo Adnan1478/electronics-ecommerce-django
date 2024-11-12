@@ -1,0 +1,248 @@
+{% extends 'admin/layout_admin.html' %}
+{% block head_dash %}
+  Admin Dashboard
+{% endblock %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-green">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Product Category List</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'listCategory' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-yellow">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Add Product Category</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'add_productCategory' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Product List</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'listProduct' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-green">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Add Product</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'add_product' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-yellow">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Inventory</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url "inventory_list" %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-red">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">User Feedback</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url "listFeedback" %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Order</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'orderList' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-green">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Admin List</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'listAdmin' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-yellow">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <div class="whitespace">
+                      <span style="font-size : 23px;">Add admin register</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <span style="font-size:26px;"></span>
+                  </div>
+                </div>
+              </div>
+              <a href="{% url 'ad_register' %}">
+                <div class="panel-footer">
+                  <span class="pull-left">View Details</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                  <div class="clearfix"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <script type="text/javascript">
+    {% if messages %}
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    {% endif %}
+  </script>
+{% endblock %}

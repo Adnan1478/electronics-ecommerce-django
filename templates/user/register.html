@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <title>Register</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/loginform.css' %}" />
+  </head>
+  <body>
+    <div class="homebut">
+      <a href="{% url 'index' %}"><i class="fas fa-home st"></i></a>
+    </div>
+    <form method="POST" class="form-group">
+      {% csrf_token %}
+      <h3>Register Here</h3>
+
+      <label>Username</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors }}</div>
+      {% endif %}
+
+      <label>Email</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="error">{{ form.email.errors }}</div>
+      {% endif %}
+
+      <label>Password</label>
+      <div class="password-container">
+        {{ form.password1 }}
+        <i class="far fa-eye password-toggle" onclick="togglePassword('id_password1')"></i>
+      </div>
+      {% if form.password1.errors %}
+        <div class="error">{{ form.password1.errors }}</div>
+      {% endif %}
+
+      <label>Confirm Password</label>
+      <div class="password-container">
+        {{ form.password2 }}
+        <i class="far fa-eye password-toggle" onclick="togglePassword('id_password2')"></i>
+      </div>
+      {% if form.password2.errors %}
+        <div class="error">{{ form.password2.errors }}</div>
+      {% endif %}
+
+      <label>Contact</label>
+      {{ form.contact }}
+      {% if form.contact.errors %}
+        <div class="error">{{ form.contact.errors }}</div>
+      {% endif %}
+
+      <button type="submit">Register</button>
+      <br /><br />
+      <a href="{% url 'login' %}">Already have an account?</a>
+    </form>
+
+    <script>
+      function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId)
+        const passwordToggle = passwordField.nextElementSibling
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text'
+          passwordToggle.classList.replace('fa-eye', 'fa-eye-slash')
+        } else {
+          passwordField.type = 'password'
+          passwordToggle.classList.replace('fa-eye-slash', 'fa-eye')
+        }
+      }
+    </script>
+  </body>
+</html>

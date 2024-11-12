@@ -1,0 +1,146 @@
+{% extends 'layout.html' %}
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* General Styles */
+    
+    /* Order Container */
+    .order-container {
+      display: flex;
+      flex-wrap: wrap; /* Allow wrapping for smaller screens */
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 2rem;
+      background-color: #ffffff; /* White background for the container */
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      margin-top: 20px; /* Space above the container */
+    }
+    /* Product Image */
+    .product-image {
+      margin-top: 2%;
+      flex: 1;
+      max-width: 400px; /* Fixed max width for the image */
+      min-width: 200px; /* Minimum width for small screens */
+    }
+    .product-image img {
+      width: 100%; /* Make image responsive */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 8px; /* Rounded corners for the image */
+    }
+    /* Product Details */
+    .product-details {
+      flex: 2;
+      margin-top: 50px;
+    }
+    .product-details h1 {
+      margin-bottom: 1rem;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px; /* Space between buttons */
+      transition: background-color 0.3s; /* Smooth transition for hover */
+    }
+    .button:hover {
+      color: black;
+    }
+    .pro_detailes {
+      font-size: 24px;
+      font-weight: 550;
+      color: #0f1111;
+      line-height: 1.5; /* Improve readability */
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .order-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center items */
+      }
+      .product-details {
+        margin-top: 20px; /* Space between image and details */
+      }
+      .button {
+        margin-bottom: 10px; /* Space below buttons */
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .pro_detailes {
+        font-size: 20px; /* Reduce font size on small screens */
+      }
+      .button {
+        padding: 8px 12px; /* Smaller button padding */
+        font-size: 14px; /* Smaller button text */
+      }
+    }
+  </style>
+{% endblock %}
+{% block title %}
+  E-commerce
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="order-container">
+      <div class="product-image">
+        <img src="/media/{{ order.product.image }}" alt="{{ order.product.product_name }}" />
+      </div>
+      <div class="product-details">
+        <p class="pro_detailes">{{ order.product.product_desc }}</p>
+        <p class="pro_detailes">
+          <strong>Product:</strong> {{ order.product.product_name }}
+        </p>
+        <p class="pro_detailes">
+          <strong>Brand:</strong> {{ order.product.brand }}
+        </p>
+        <p class="pro_detailes">
+          <strong>Color:</strong> {{ order.product.color }}
+        </p>
+        <p class="pro_detailes">
+          <strong>Quantity:</strong> {{ order.quantity }}
+        </p>
+        <p class="pro_detailes">
+          <strong>Price:</strong> ₹{{ order.product.price|floatformat:2 }}
+        </p>
+        <p class="pro_detailes">
+          <strong>Total Price:</strong> ₹{{ total_price  }}
+        </p>
+
+        <br />
+        {% if order.status == 'PROCESSING' %}
+          <p class="pro_detailes">Product out for delivery</p>
+          <br />
+
+          <a href="{% url 'download_bill' order.order_id %}" class="add-to-cart-button remove-to-cart-button" style="margin-right: 10px;">Download Bill</a>
+          <a href="{% url 'user_cancel_order' order.order_id %}" class="add-to-cart-button remove-to-cart-button">Cancel Order</a>
+        {% elif order.status == 'PENDING' %}
+          <p class="pro_detailes">Product pending</p>
+        {% elif order.status == 'SHIPPED' %}
+          <p class="pro_detailes">Producy shipped</p>
+        {% elif order.status == 'OUT_FOR_DELIVERY' %}
+          <p class="pro_detailes">Product out for delivery</p>
+        {% elif order.status == 'CANCELED' %}
+          <p class="pro_detailes">Product canceled</p>
+        {% elif order.status == 'REFUNDED' %}
+          <p class="pro_detailes">Product refunded</p>
+        {% elif order.status == 'FAILED' %}
+          <p class="pro_detailes">Produc failed</p>
+        {% elif order.status == 'RETURNED' %}
+          <p class="pro_detailes">Product returned</p>
+        {% endif %}
+
+        {% comment %} <p class="pro_detailes">
+          <strong>Status:</strong> {{ order.status }}
+        </p> {% endcomment %}
+      </div>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
+{% endblock %}
