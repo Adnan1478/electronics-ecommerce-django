@@ -7,6 +7,9 @@ from django.contrib import messages
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.db.models import Q
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     products = Product.objects.all()[:6]  # Fetch all products
@@ -108,7 +111,8 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
     
     # Get the quantity from the request (default is 1 if not provided)
-    quantity = int(request.POST.get("quantity", 1))
+    quantity = int(request.POST.get("quantity", 0))
+    
 
     # Check if the product already exists in the cart for this user
     cart_item, created = Cart.objects.get_or_create(
@@ -119,7 +123,8 @@ def add_to_cart(request, product_id):
 
     if not created:
         # If the cart item already exists, increase the quantity
-        cart_item.quantity += quantity
+        cart_item.quantity += quantity 
+        # cart_item.quantity -=1
         cart_item.save()
 
     return redirect("view_cart")  # Redirect to the cart view page
@@ -199,34 +204,117 @@ def buy_product(request, item_id):
     # Check if enough stock is available
     if cart_item.product.stock < cart_item.quantity:
         messages.error(request, "Not enough stock available for this product.")
-        return redirect("cart")  # Redirect to the cart if stock is insufficient
+        return redirect("view_cart")  # Redirect to the cart if stock is insufficient
 
-    # Create the order directly without going to a checkout page
-    order, created = Order.objects.get_or_create(
+    # Calculate total price
+    total_price = cart_item.product.price * cart_item.quantity
+
+    # Initialize Razorpay Client
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+    # Create Razorpay Order
+    amount_in_paise = int(total_price * 100)
+    data = {
+        "amount": amount_in_paise,
+        "currency": "INR",
+        "receipt": f"receipt_order_{item_id}_{int(timezone.now().timestamp())}",
+    }
+
+    try:
+        razorpay_order = client.order.create(data=data)
+        razorpay_order_id = razorpay_order['id']
+    except Exception as e:
+        messages.error(request, f"Error generating Razorpay order: {str(e)}")
+        return redirect("view_cart")
+
+    # Create the pending order in our database
+    order = Order.objects.create(
         customer=user,
         product=cart_item.product,
-        defaults={
-            "quantity": cart_item.quantity,  # Use the cart item's quantity
-            "user_details": user_details,  # Use user details for the order
-            "status": 'PENDING',  # Set status to 'PENDING'
-            "created_at": timezone.now()  # Set the order creation time
-        },
+        quantity=cart_item.quantity,
+        user_details=user_details,
+        status='PENDING',
+        razorpay_order_id=razorpay_order_id,
+        created_at=timezone.now()
     )
 
-    # Update the order details if it was not newly created
-    if not created:
-        order.quantity += cart_item.quantity  # Add to existing quantity if needed
-        order.save()
+    context = {
+        "cart_item": cart_item,
+        "order": order,
+        "user_details": user_details,
+        "razorpay_order_id": razorpay_order_id,
+        "razorpay_key_id": settings.RAZORPAY_KEY_ID,
+        "amount_paise": amount_in_paise,
+        "total_price": total_price,
+        "user_email": user.email,
+        "user_contact": user_details.contact,
+        "user_name": user_details.name,
+    }
 
-    # Deduct the purchased quantity from the product's stock
-    cart_item.product.stock -= cart_item.quantity
-    cart_item.product.save()
+    # Redirect to Razorpay payment page
+    return render(request, "store/checkout.html", context)
 
-    # Delete the cart item after placing the order
-    cart_item.delete()
 
-    # Redirect to the order product page or wherever you want to go after the purchase
-    return redirect("orderproduct")
+@csrf_exempt
+def payment_success(request):
+    if request.method == "POST":
+        payment_id = request.POST.get("razorpay_payment_id")
+        order_id = request.POST.get("razorpay_order_id")
+        signature = request.POST.get("razorpay_signature")
+        cart_item_id = request.POST.get("cart_item_id")
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        params_dict = {
+            'razorpay_order_id': order_id,
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature
+        }
+
+        try:
+            # Verify payment signature
+            client.utility.verify_payment_signature(params_dict)
+
+            # Retrieve and update the order
+            order = get_object_or_404(Order, razorpay_order_id=order_id)
+            order.status = 'PROCESSING'
+            order.razorpay_payment_id = payment_id
+            order.razorpay_signature = signature
+            order.save()
+
+            # Deduct product stock
+            product = order.product
+            product.stock -= order.quantity
+            product.save()
+
+            # Remove product from cart
+            if cart_item_id:
+                try:
+                    cart_item = Cart.objects.get(cart_id=cart_item_id)
+                    cart_item.delete()
+                except Cart.DoesNotExist:
+                    pass
+
+            messages.success(request, "Payment successful! Your order has been placed.")
+            return render(request, "store/payment_success.html", {
+                "order": order,
+                "payment_id": payment_id
+            })
+
+        except Exception as e:
+            # Handle payment verification failure
+            try:
+                order = Order.objects.get(razorpay_order_id=order_id)
+                order.status = 'FAILED'
+                order.save()
+            except Order.DoesNotExist:
+                pass
+            
+            messages.error(request, f"Payment signature verification failed: {str(e)}")
+            return render(request, "store/payment_failed.html", {
+                "error": str(e)
+            })
+
+    return redirect("view_cart")
 
 
 
@@ -267,7 +355,7 @@ def download_bill(request, order_id):
 
     # Create a PDF response
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="order_{order_id}_bill.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="{order_id}_{order.product.product_name}_bill.pdf"'
 
     # Convert the HTML to PDF
     pisa_status = pisa.CreatePDF(html, dest=response)

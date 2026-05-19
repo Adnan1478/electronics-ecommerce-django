@@ -35,33 +35,28 @@
                   <p style="font-size: 20px;">{{ request.session.username }}</p>
                 </div>
                 <div class="info">
-                  <!-- Display the user's username -->
-                  <a href="#" id="profile-dropdown-toggle"><i class="fa-solid fa-gear" style="font-size: 30px; margin-left: 10px;"></i></a>
+                  <a href="javascript:void(0);" id="profile-dropdown-toggle"><i class="fa-solid fa-gear" style="font-size: 30px; margin-left: 10px;"></i></a>
                 </div>
               </div>
 
               <!-- Dropdown menu for user actions -->
-              <div id="profile-dropdown" class="dropdown-content">
-                <a href="{% url "profile" %}">Profile</a>
+              <div id="profile-dropdown" class="dropdown-content" style="display: none;">
+                <a href="{% url 'profile' %}">Profile</a>
                 <a href="{% url 'orderproduct' %}">Your Order</a>
                 <a href="{% url 'user_change_password' %}">Change Password</a>
-                {% comment %} <a href="#">Settings</a> {% endcomment %}
                 <a href="{% url 'logout' %}">Logout</a>
               </div>
             {% else %}
               <!-- Sign In Link (Visible only when the user is not logged in) -->
               <a href="{% url 'login' %}">SIGN IN</a>
-              {% comment %}
-              <!-- Uncomment the following line to also show a "SIGN UP" link -->
-              <!-- <a href="{% url 'register' %}">SIGN UP</a> -->
-              {% endcomment %}
+              <a href="{% url 'register' %}">SIGN UP</a>
             {% endif %}
           </div>
         </div>
       </section>
       <div class="container">
         <div class="navbar-brand">
-          <img src="{% static 'images/logooo.svg' %}" alt="" class="logo" width="80%" height="auto" style="width: 150px; height: 50px;"/>
+          <img src="{% static 'images/logooo.svg' %}" alt="" class="logo" width="80%" height="auto" style="width: 150px; height: 50px;" />
         </div>
         <nav class="navbar">
           <ul>
@@ -69,7 +64,7 @@
               <a href="{% url 'index' %}" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'index' %}" class="nav-link">About</a>
+              <a href="#JumpAbout" class="nav-link">About</a>
             </li>
             <li class="nav-item">
               <a href="{% url 'product' %}" class="nav-link">Product</a>
@@ -127,5 +122,28 @@
       </div>
     </footer>
     <script type="module" src="{% static 'js/main.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const dropdownToggle = document.getElementById('profile-dropdown-toggle')
+        const dropdownMenu = document.getElementById('profile-dropdown')
+      
+        dropdownToggle.addEventListener('click', function (event) {
+          event.preventDefault() // Prevent the default action of the anchor tag.
+          // Toggle the dropdown menu's visibility.
+          if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+            dropdownMenu.style.display = 'block'
+          } else {
+            dropdownMenu.style.display = 'none'
+          }
+        })
+      
+        // Close dropdown if clicked outside.
+        document.addEventListener('click', function (event) {
+          if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = 'none'
+          }
+        })
+      })
+    </script>
   </body>
 </html>

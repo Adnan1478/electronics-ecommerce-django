@@ -77,45 +77,50 @@
     <section class="container">
       <div id="productContainer">
         {% for product in products %}
-          <article class="information cards">
-            <input type="hidden" class="productId" value="{{ product.product_id }}" />
-            <span class="category">{{ product.category.cat_name }}</span>
-            <div class="imageContainer">
-              <img class="productImage" src="/media/{{ product.image }}" alt="{{ product.product_name }}" />
-            </div>
-            <h2 class="productName">{{ product.product_name }}</h2>
-
-            <div class="productRating">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-
-            <p class="productDescription">{{ product.product_desc }}</p>
-
-            <div class="productPriceElement">
-              <p class="productPrice">₹{{ product.price }}</p>
-              <p class="productActualPrice"></p> <!-- Include if there's a discount or original price -->
-            </div>
-
-            <div class="productStockElement">
-              <p class="productProperty">Color:</p>
-              <p class="productStock">{{ product.color }}</p>
-            </div>
-
+        <article class="information cards">
+          <input type="hidden" class="productId" value="{{ product.product_id }}" />
+          <span class="category">{{ product.category.cat_name }}</span>
+          <div class="imageContainer">
+            <img class="productImage" src="/media/{{ product.image }}" alt="{{ product.product_name }}" />
+          </div>
+          <h2 class="productName">{{ product.product_name }}</h2>
+        
+          <div class="productRating">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        
+          <p class="productDescription">{{ product.product_desc }}</p>
+        
+          <div class="productPriceElement">
+            <p class="productPrice">₹{{ product.price }}</p>
+            <p class="productActualPrice"></p>
+          </div>
+        
+          <div class="productStockElement">
+            <p class="productProperty">Color:</p>
+            <p class="productStock">{{ product.color }}</p>
+          </div>
+        
+          <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
+            {% csrf_token %}
             <div class="productQuantityElement">
               <p class="productProperty">Quantity</p>
               <div class="stockElement">
-                <button class="cartIncrement">+</button>
+                <button type="button" class="cartDecrement">-</button>
                 <p class="productQuantity">1</p>
-                <button class="cartDecrement">-</button>
+                <input type="hidden" name="quantity" value="1" class="productQuantityInput">
+                <button type="button" class="cartIncrement">+</button>
               </div>
             </div>
-            <a href="{% url 'add_to_cart' product.product_id %}"><button class="add-to-cart-button"><i class="fa-solid fa-cart-shopping"></i> Add To Cart</button></a>
-          </article>
+            <button type="submit" class="add-to-cart-button"><i class="fa-solid fa-cart-shopping"></i> Add To Cart</button>
+          </form>
+        </article>
         {% endfor %}
+        
       </div>
     </section>
 
@@ -130,6 +135,40 @@
     document.getElementById('category-select').addEventListener('change', function() {
       document.getElementById('search-input').focus();
     });
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".information").forEach((productCard) => {
+        const quantityElement = productCard.querySelector(".productQuantity");
+        const quantityInput = productCard.querySelector(".productQuantityInput");
+        const incrementButton = productCard.querySelector(".cartIncrement");
+        const decrementButton = productCard.querySelector(".cartDecrement");
+        const addToCartForm = productCard.querySelector("form");
+    
+        let currentQuantity = parseInt(quantityElement.textContent);
+    
+        // Increment Quantity
+        incrementButton.addEventListener("click", () => {
+          currentQuantity += 1;
+          quantityElement.textContent = currentQuantity;
+          quantityInput.value = currentQuantity; // Synchronize hidden input
+        });
+    
+        // Decrement Quantity
+        decrementButton.addEventListener("click", () => {
+          if (currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.textContent = currentQuantity;
+            quantityInput.value = currentQuantity; // Synchronize hidden input
+          }
+        });
+    
+        // Ensure the form submits the correct quantity
+        addToCartForm.addEventListener("submit", (e) => {
+          quantityInput.value = currentQuantity;
+        });
+      });
+    });
+    
   </script>
 {% endblock %}
 

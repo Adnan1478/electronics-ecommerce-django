@@ -59,7 +59,7 @@ class UserUpload(models.Model):
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     customer = models.ForeignKey(Login, on_delete=models.CASCADE,null=True)
     # status = models.BooleanField(default=True)  # Uncomment if needed
 
@@ -86,6 +86,9 @@ class Order(models.Model):
     user_details = models.ForeignKey(UserUpload, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_signature = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f'Order {self.order_id} - {self.status}'

@@ -16,4 +16,5 @@ urlpatterns = [
     path('user_cancel_order/<int:order_id>/', views.user_cancel_order, name='user_cancel_order'),
     path("buy/<int:item_id>/", views.buy_product, name="buy"),  # Ensure item_id is used here
     path("remove_from_cart/<int:item_id>/", views.remove_from_cart, name="remove_from_cart"),
+    path('payment_success/', views.payment_success, name='payment_success'),
 ]

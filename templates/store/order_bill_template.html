@@ -1,104 +1,319 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Bill</title>
     <style>
-        body {
-            font-family: 'DejaVu Sans', Arial, sans-serif;
-            margin: 20px;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            color: #007bff;
-        }
-        .invoice-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .invoice-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .invoice-header p {
-            font-size: 16px;
-            margin: 5px 0;
-        }
-        .invoice-details {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .invoice-details th, .invoice-details td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            font-size: 15px;
-            text-align: left;
-        }
-        .invoice-details th {
-            background-color: #f5f5f5;
-        }
-        .invoice-total {
-            font-size: 18px;
-            font-weight: bold;
-            color: #007bff;
-            margin-top: 10px;
-            text-align: right;
-        }
-        .terms {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-        }
+      body {
+        font-family: 'DejaVu Sans', Arial, sans-serif;
+        margin: 20px;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        color: #007bff;
+      }
+      .invoice-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .invoice-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .invoice-header p {
+        font-size: 16px;
+        margin: 5px 0;
+      }
+      .invoice-details {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      .invoice-details th,
+      .invoice-details td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        font-size: 15px;
+        text-align: left;
+      }
+      .invoice-details th {
+        background-color: #f5f5f5;
+      }
+      .invoice-total {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        margin-top: 10px;
+        text-align: right;
+      }
+      .terms {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="invoice-container">
-        <h1>Order Bill</h1>
-        <div class="invoice-header">
-            <p><strong>Invoice Number:</strong> {{ order.order_id }}</p>
-            <p><strong>Date of Issue:</strong> {{ order.created_at }}</p>
-        </div>
-        <table class="invoice-details">
-            <tr>
-                <th>Product</th>
-                <td>{{ order.product.product_name }}</td>
-            </tr>
-            <tr>
-                <th>Brand</th>
-                <td>{{ order.product.brand }}</td>
-            </tr>
-            <tr>
-                <th>Color</th>
-                <td>{{ order.product.color }}</td>
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ order.quantity }}</td>
-            </tr>
-            <tr>
-                <th>Unit Price</th>
-                <td>Rs. {{ order.product.price|floatformat:2 }}</td>
-            </tr>
-            <tr>
-                <th>Total Price</th>
-                <td class="invoice-total">Rs. {{ total_price }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{% if order.status == "PROCESSING" %}Ordered{% else %}Canceled{% endif %}</td>
-            </tr>
-        </table>
-        <div class="terms">
-            <p><strong>Terms:</strong> Please pay by {{ order.created_at }}.</p>
-        </div>
+      <h1>Order Bill</h1>
+      <div class="invoice-header">
+        <p>
+          <strong>Invoice Number:</strong> {{ order.order_id }}
+        </p>
+        <p>
+          <strong>Date of Issue:</strong> {{ order.created_at }}
+        </p>
+      </div>
+      <table class="invoice-details">
+        <tr>
+          <th>Product</th>
+          <td>{{ order.product.product_name }}</td>
+        </tr>
+        <tr>
+          <th>Brand</th>
+          <td>{{ order.product.brand }}</td>
+        </tr>
+        <tr>
+          <th>Color</th>
+          <td>{{ order.product.color }}</td>
+        </tr>
+        <tr>
+          <th>Quantity</th>
+          <td>{{ order.quantity }}</td>
+        </tr>
+        <tr>
+          <th>Unit Price</th>
+          <td>Rs. {{ order.product.price|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <th>Total Price</th>
+          <td class="invoice-total">Rs. {{ total_price }}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>
+            {% if order.status == 'PROCESSING' %}
+              Ordered
+            {% else %}
+              Canceled
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+      <div class="terms">
+        <p>
+          <strong>Terms:</strong> Please pay by {{ order.created_at }}.
+        </p>
+      </div>
     </div>
-</body>
+  </body> {% endcomment %}
+  {% comment %}
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Receipt</title>
+    <style>
+      @font-face {
+        font-family: 'MyFont';
+        src: url('/path/to/font.ttf') format('truetype');
+      }
+      
+      body {
+        font-family: Arial, sans-serif, 'MyFont';
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      
+      .receipt-container {
+        max-width: 700px;
+        margin: 20px auto; /* Reduced margin */
+        background: #fff;
+        padding: 15px; /* Reduced padding */
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .receipt-header {
+        text-align: center;
+        border-bottom: 1px solid #ddd; /* Reduced border size */
+        padding-bottom: 10px; /* Reduced padding */
+        margin-bottom: 15px;
+      }
+      
+      .receipt-header h1 {
+        margin: 0;
+        color: #007bff;
+        font-size: 1.6em; /* Slightly smaller font */
+      }
+      
+      .receipt-header p {
+        font-size: 1em; /* Slightly smaller font */
+        color: #555;
+      }
+      
+      .customer-details,
+      .order-details {
+        margin-bottom: 20px; /* Reduced margin */
+      }
+      
+      .customer-details h2,
+      .order-details h2 {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px; /* Reduced padding */
+        margin-bottom: 10px; /* Reduced margin */
+        color: #444;
+        font-size: 1.1em;
+      }
+      
+      .customer-details p {
+        font-size: 0.95em; /* Slightly smaller font */
+        margin: 3px 0; /* Reduced margin */
+        line-height: 0.2; /* Reduced line height */
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      
+      table thead {
+        background-color: #007bff;
+        color: #fff;
+      }
+      
+      table thead th,
+      table tbody td,
+      table tfoot td {
+        padding: 6px; /* Reduced padding */
+        font-size: 0.95em; /* Slightly smaller font */
+        vertical-align: middle;
+      }
+      
+      table tbody tr {
+        border-bottom: 1px solid #ddd;
+      }
+      table tbody td {
+        text-align: center;
+      }
+      
+      table tfoot {
+        font-weight: bold;
+      }
+      
+      table tfoot td {
+        background: #f4f4f9;
+        text-align: right;
+      }
+      
+      table tfoot tr:last-child td {
+        background-color: #007bff;
+        color: #fff;
+      }
+      
+      .receipt-footer {
+        text-align: center;
+        border-top: 1px solid #ddd; /* Reduced border size */
+        padding-top: 10px; /* Reduced padding */
+        margin-top: 15px; /* Reduced margin */
+        font-size: 0.9em;
+        color: #666;
+      }
+      
+      .receipt-footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      
+      .receipt-footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="receipt-container">
+      <header class="receipt-header">
+        <h1>TechNech Store</h1>
+        <p>Thank you for your order!</p>
+      </header>
+      <section class="customer-details">
+        <h2>Order Summary</h2>
+        <p>
+          <strong>Order ID:</strong> {{ order.order_id }}
+        </p>
+        <p>
+          <strong>Order Date:</strong>{{ order.created_at }}
+        </p>
+        <p style="line-height: 0; padding-bottom: -5px;">
+          <strong>Customer Name:</strong> {{ order.user_details.name }}
+        </p>
+        <p style="line-height: 0;">
+          <strong>Shipping Address:</strong> {{ order.user_details.address }}<br /><br/>,
+          {{ order.user_details.zip_code }}, {{ order.user_details.city }}, 
+          {{ order.user_details.state }}, {{ order.user_details.country }}
+        </p>
+      </section>
+      <section class="order-details">
+        <h2>Items Ordered</h2>
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+          <tbody>   
+            <tr>
+              <td>
+                {{ order.product.product_name }},{{ order.product.brand }},<br />{{ order.product.color }}
+              </td>
+              <td>{{ order.quantity }}</td>
+              <td>Rs. {{ order.product.price|floatformat:2 }}</td>
+              <td>Rs. {{ total_price }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">Subtotal</td>
+              <td>Rs. {{ total_price }}</td>
+            </tr>
+            <tr>
+              <td colspan="3">Shipping</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <strong>Total</strong>
+              </td>
+              <td>
+                <strong>Rs. {{ total_price }}</strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+      <footer class="receipt-footer">
+        <p>
+          If you have any questions, contact us at <a href="mailto:support@example.com">technech@example.com</a>.
+        </p>
+        <p>
+          <strong>Visit us again!</strong>
+        </p>
+      </footer>
+    </div>
+  </body>
 </html>

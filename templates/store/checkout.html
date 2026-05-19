@@ -2,93 +2,422 @@
 {% block link %}
   {% load static %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="{% static 'css/checkout.css' %}" />
+  
+  <style>
+    /* Premium Modern Light Theme Styles for Checkout */
+    :root {
+      --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      --accent-color: #4f46e5;
+      --bg-light: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      font-family: 'Outfit', 'Inter', sans-serif;
+    }
+
+    .checkout-wrapper {
+      padding: 3rem 0;
+      min-height: 80vh;
+      background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05), transparent 400px),
+                  radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.05), transparent 400px);
+    }
+
+    .checkout-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .checkout-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+
+    .checkout-card:hover {
+      box-shadow: 0 15px 40px rgba(79, 70, 229, 0.08);
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title i {
+      color: var(--accent-color);
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .detail-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .detail-val {
+      font-weight: 600;
+      color: var(--text-main);
+      text-align: right;
+    }
+
+    .address-box {
+      background: rgba(0, 0, 0, 0.01);
+      border: 1px dashed rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .address-box p {
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .product-summary {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.015);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .prod-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .prod-details {
+      flex: 1;
+    }
+
+    .prod-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .prod-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0.25rem 0 0 0;
+    }
+
+    .total-badge {
+      background: rgba(79, 70, 229, 0.05);
+      border: 1px solid rgba(79, 70, 229, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .total-badge span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .total-badge h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0;
+      color: var(--accent-color);
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: var(--primary-gradient);
+      border: none;
+      color: white;
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .pay-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 30%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(45deg);
+      transition: 0.5s;
+      opacity: 0;
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    }
+
+    .pay-btn:hover::after {
+      left: 120%;
+      opacity: 1;
+    }
+
+    .pay-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Fullscreen Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(248, 250, 252, 0.95);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(79, 70, 229, 0.1);
+      border-top: 4px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .loading-subtext {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 992px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 {% endblock %}
+
 {% block title %}
-  Checkout
+  Checkout - TechNest
 {% endblock %}
 
 {% block content %}
-  <div class="content-wrapper">
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Checkout</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="form_formate">
-                  <form method="POST" class="jumbotron" enctype="multipart/form-data" action="{% url 'buy' cart_item.cart_id %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label for="name">Full Name:</label>
-                      <input type="text" name="name" id="name" class="form-control" placeholder="Enter Full Name" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="city">City:</label>
-                      <input type="text" name="city" id="city" class="form-control" placeholder="Enter City" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="state">State:</label>
-                      <input type="text" name="state" id="state" class="form-control" placeholder="Enter State" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="zip_code">Zip Code:</label>
-                      <input type="number" name="zip_code" id="zip_code" class="form-control" placeholder="Enter Zip Code" min="100000" max="999999" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="contact">Contact:</label>
-                      <input type="number" name="contact" id="contact" class="form-control" placeholder="Enter Contact Number" min="1000000000" max="9999999999" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="address">Address:</label>
-                      <textarea name="address" id="address" class="form-control" rows="4" placeholder="Enter Address" required></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label for="Payment">Payment : Only COD available</label>
-                    </div>
-                    <div class="form-group">
-                      {% comment %} <input type="submit" value="Place Order" class="btn btn-success" /> {% endcomment %}
-                      <button class="btn btn-success button">Place Order</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+  <div class="checkout-wrapper">
+    <div class="container">
+      <h1 class="checkout-title"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</h1>
+      
+      <div class="grid-container">
+        
+        <!-- Left Side: Shipping Address and Profile Details -->
+        <div class="checkout-card">
+          <h2 class="section-title"><i class="fa-solid fa-location-dot"></i> Delivery Address</h2>
+          
+          <div class="detail-row">
+            <span class="detail-label">Recipient Name</span>
+            <span class="detail-val">{{ user_details.name }}</span>
           </div>
-          <!-- /.col -->
+          <div class="detail-row">
+            <span class="detail-label">Contact Number</span>
+            <span class="detail-val">+91 {{ user_details.contact }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">City</span>
+            <span class="detail-val">{{ user_details.city }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">State</span>
+            <span class="detail-val">{{ user_details.state }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Zip Code</span>
+            <span class="detail-val">{{ user_details.zip_code }}</span>
+          </div>
+
+          <div class="address-box">
+            <h4 style="margin:0 0 0.5rem 0; font-weight:700; color: var(--text-main);"><i class="fa-solid fa-map-pin"></i> Full Delivery Address</h4>
+            <p>{{ user_details.address }}</p>
+            <p>{{ user_details.city }}, {{ user_details.state }}, {{ user_details.country }}</p>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: right;">
+            <a href="{% url 'profile' %}" style="color: var(--accent-color); font-weight:600; text-decoration:none;"><i class="fa-regular fa-pen-to-square"></i> Modify Details</a>
+          </div>
         </div>
-        <!-- /.row -->
+
+        <!-- Right Side: Order Summary & Razorpay CTA -->
+        <div class="checkout-card">
+          <h2 class="section-title"><i class="fa-solid fa-receipt"></i> Order Summary</h2>
+          
+          <div class="product-summary">
+            {% if cart_item.product.image %}
+              <img class="prod-img" src="/media/{{ cart_item.product.image }}" alt="{{ cart_item.product.product_name }}">
+            {% else %}
+              <div class="prod-img" style="background: rgba(0,0,0,0.02); display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-laptop fa-2x"></i></div>
+            {% endif %}
+            <div class="prod-details">
+              <h3 class="prod-name">{{ cart_item.product.product_name }}</h3>
+              <p class="prod-meta">Qty: {{ cart_item.quantity }} &times; ₹{{ cart_item.product.price }}</p>
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">Subtotal</span>
+            <span class="detail-val">₹{{ total_price }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Shipping</span>
+            <span class="detail-val" style="color: #10b981;">FREE</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Payment Mode</span>
+            <span class="detail-val">Online (Razorpay)</span>
+          </div>
+
+          <div class="total-badge">
+            <span>TOTAL AMOUNT</span>
+            <h3>₹{{ total_price }}</h3>
+          </div>
+
+          <!-- Razorpay Payment Button -->
+          <button id="rzp-button1" class="pay-btn">
+            <i class="fa-solid fa-credit-card"></i> Pay Securely with Razorpay
+          </button>
+        </div>
+
       </div>
-      <!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
   </div>
 
+  <!-- Loading Overlay for Signature Verification -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Verifying Payment Signature...</div>
+    <div class="loading-subtext">Please do not refresh the page or click back.</div>
+  </div>
+
+  <!-- Hidden Form to POST Payment Response back to Django callback -->
+  <form id="razorpay-form" action="{% url 'payment_success' %}" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id" id="hidden_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="hidden_order_id">
+    <input type="hidden" name="razorpay_signature" id="hidden_signature">
+    <input type="hidden" name="cart_item_id" value="{{ cart_item.cart_id }}">
+  </form>
+
+  <!-- Razorpay Checkout Integration Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var contactInput = document.getElementById('contact')
-      var zipCodeInput = document.getElementById('zip_code')
+    var options = {
+      "key": "{{ razorpay_key_id }}",
+      "amount": "{{ amount_paise }}",
+      "currency": "INR",
+      "name": "TechNest EcomStore",
+      "description": "Secure Purchase: {{ cart_item.product.product_name }}",
+      "image": "https://i.postimg.cc/Nj9dgJ98/cards.png",
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response) {
+        // Show loading spinner during signature validation
+        document.getElementById('loading-overlay').style.display = 'flex';
+        
+        // Populating hidden form elements
+        document.getElementById('hidden_payment_id').value = response.razorpay_payment_id;
+        document.getElementById('hidden_order_id').value = response.razorpay_order_id;
+        document.getElementById('hidden_signature').value = response.razorpay_signature;
+        
+        // Submit signature verification request
+        document.getElementById('razorpay-form').submit();
+      },
+      "prefill": {
+        "name": "{{ user_name }}",
+        "email": "{{ user_email }}",
+        "contact": "{{ user_contact }}"
+      },
+      "notes": {
+        "address": "{{ user_details.address }}"
+      },
+      "theme": {
+        "color": "#4f46e5"
+      }
+    };
     
-      contactInput.addEventListener('input', function () {
-        var value = contactInput.value
-        if (value.length > 10) {
-          contactInput.value = value.slice(0, 10)
-        }
-      })
+    var rzp1 = new Razorpay(options);
     
-      zipCodeInput.addEventListener('input', function () {
-        var value = zipCodeInput.value
-        if (value.length > 6) {
-          zipCodeInput.value = value.slice(0, 6)
-        }
-      })
-    })
+    rzp1.on('payment.failed', function (response){
+      alert("Payment failed: " + response.error.description);
+    });
+
+    document.getElementById('rzp-button1').onclick = function(e){
+      rzp1.open();
+      e.preventDefault();
+    }
   </script>
 {% endblock %}

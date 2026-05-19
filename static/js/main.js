@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   incrementButtons.forEach(button => {
       button.addEventListener('click', function() {
-          const quantityElement = this.nextElementSibling;
+          const quantityElement = this.previousElementSibling;
           let currentQuantity = parseInt(quantityElement.textContent);
 
           // Check if the current quantity is less than the maximum quantity
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   decrementButtons.forEach(button => {
       button.addEventListener('click', function() {
-          const quantityElement = this.previousElementSibling;
+          const quantityElement = this.nextElementSibling;
           let currentQuantity = parseInt(quantityElement.textContent);
 
           // Decrease the quantity only if it's greater than 1
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 });
-  
+
   // Profile Dropdown Function
   document.addEventListener('DOMContentLoaded', function() {
     var profileDropdownToggle = document.getElementById('profile-dropdown-toggle');
